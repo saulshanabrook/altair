@@ -1,6 +1,19 @@
 language: python
 
+# needed until https://github.com/travis-ci/apt-package-whitelist/issues/4268
+sudo: required
+
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
+
 cache: pip
+
+env:
+  PATH: /tmp:$PATH
 
 python:
   - 2.7
@@ -8,9 +21,11 @@ python:
   - 3.6
 
 before_install:
+  - wget https://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip -O /tmp/chromedriver
+  - chmod 777 /tmp/chromedriver
   - pip install pip --upgrade;
   - pip install -r requirements.txt;
-  - pip install jinja2 sphinx docutils
+  - pip install jinja2 sphinx docutils selenium
 
 install:
   - python setup.py install;
